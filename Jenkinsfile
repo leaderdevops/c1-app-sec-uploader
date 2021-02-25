@@ -20,7 +20,7 @@ node('jenkins-jenkins-slave') {
         echo 'All functional tests passed'
       },
       "Check Image (pre-Registry)": {
-        try {
+        // try {
           smartcheckScan([
             imageName: "${REPOSITORY}:$BUILD_NUMBER",
             smartcheckHost: "${DSSC_SERVICE}",
@@ -51,31 +51,31 @@ node('jenkins-jenkins-slave') {
               ],
             ]).toString(),
           ])
-        } catch(e) {
-          withCredentials([
-            usernamePassword(
-              credentialsId: 'smartcheck-auth',
-              usernameVariable: 'SMARTCHECK_AUTH_CREDS_USR',
-              passwordVariable: 'SMARTCHECK_AUTH_CREDS_PSW'
-            )
-          ]) { script {
-            docker.image('mawinkler/scan-report').pull()
-            docker.image('mawinkler/scan-report').inside("--entrypoint=''") {
-              sh """
-                python /usr/src/app/scan-report.py \
-                  --config_path "/usr/src/app" \
-                  --name "${REPOSITORY}" \
-                  --image_tag "${BUILD_NUMBER}" \
-                  --out_path "${WORKSPACE}" \
-                  --service "${DSSC_SERVICE}" \
-                  --username "${SMARTCHECK_AUTH_CREDS_USR}" \
-                  --password "${SMARTCHECK_AUTH_CREDS_PSW}"
-              """
-              archiveArtifacts artifacts: 'report_*.pdf'
-            }
-            error('Issues in image found')
-          } }
-        }
+        // } catch(e) {
+        //   withCredentials([
+        //     usernamePassword(
+        //       credentialsId: 'smartcheck-auth',
+        //       usernameVariable: 'SMARTCHECK_AUTH_CREDS_USR',
+        //       passwordVariable: 'SMARTCHECK_AUTH_CREDS_PSW'
+        //     )
+        //   ]) { script {
+        //     docker.image('mawinkler/scan-report').pull()
+        //     docker.image('mawinkler/scan-report').inside("--entrypoint=''") {
+        //       sh """
+        //         python /usr/src/app/scan-report.py \
+        //           --config_path "/usr/src/app" \
+        //           --name "${REPOSITORY}" \
+        //           --image_tag "${BUILD_NUMBER}" \
+        //           --out_path "${WORKSPACE}" \
+        //           --service "${DSSC_SERVICE}" \
+        //           --username "${SMARTCHECK_AUTH_CREDS_USR}" \
+        //           --password "${SMARTCHECK_AUTH_CREDS_PSW}"
+        //       """
+        //       archiveArtifacts artifacts: 'report_*.pdf'
+        //     }
+        //     error('Issues in image found')
+        //   } }
+        // }
       }
     )
     stage('Push Image to Registry') {
