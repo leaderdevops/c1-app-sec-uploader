@@ -34,10 +34,10 @@ node('jenkins-jenkins-slave') {
               malware: 0,
               vulnerabilities: [
                 defcon1: 0,
-                critical: 3,
-                high: 40,
-                medium: 200,
-                low: 50
+                critical: 6,
+                high: 85,
+                medium: 126,
+                low: 12
               ],
               contents: [
                 defcon1: 0,
