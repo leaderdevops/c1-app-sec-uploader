@@ -11,7 +11,7 @@ RUN rm -rf /var/www/index.html
 COPY config.yml /var/www/html/config.yml
 COPY config.php /var/www/html/config.php
 
-COPY ./trend_app_protect/trend_app_protect.so /usr/local/lib/php/extensions/no-debug-non-zts-20170718/
+COPY ./trend_app_protect/trend_app_protect-x86_64-Linux-gnu-4.1.11-20170718.so /usr/local/lib/php/extensions/no-debug-non-zts-20170718/
 COPY trend_app_protect.ini /usr/local/etc/php/conf.d
 
 ENTRYPOINT ["/main.sh"]
